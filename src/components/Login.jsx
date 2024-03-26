@@ -5,7 +5,7 @@ import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../auth';
 import { useAuth } from '../authContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = () => { 
 
     const { userLoggedIn } = useAuth()
 
