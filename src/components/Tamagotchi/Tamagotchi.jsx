@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './Tamagotchi.css';
 import hero_idle from '../../assets/hero_idle.gif';
 import poopImg from '../../assets/poop.png'; // Assicurati di avere questo file in assets
+import InteractionPanel from '../InteractionPanel/InteractionPanel';
 
-const Tamagotchi = ({ energy }) => {
+const Tamagotchi = () => {
     const [position, setPosition] = useState(0);
     const [poops, setPoops] = useState([]);
-    const [hunger, setHunger] = useState(0);
     const [happiness, setHappiness] = useState(100);
+    const [hunger, setHunger] = useState(0);
+    const [energy, setEnergy] = useState(50);
 
     useEffect(() => {
         const moveInterval = setInterval(() => {
@@ -57,6 +59,19 @@ const Tamagotchi = ({ energy }) => {
         setPoops(prevPoops => prevPoops.filter(poop => poop.id !== id));
     };
 
+    const feedTamagotchi = () => {
+        setHunger(prevHunger => Math.max(prevHunger - 10, 0));
+    };
+
+    const playWithTamagotchi = () => {
+        setHappiness(prevHappiness => Math.min(prevHappiness + 10, 100));
+        setEnergy(prevEnergy => Math.max(prevEnergy - 10, 0));
+    };
+
+    const putTamagotchiToSleep = () => {
+        setEnergy(prevEnergy => Math.min(prevEnergy + 20, 100));
+    };
+
     return (
         <div>
             <h2>Tamagotchi</h2>
@@ -72,6 +87,11 @@ const Tamagotchi = ({ energy }) => {
                 <p>Happiness: {happiness}</p>
                 <p>Energy: {energy}</p>
             </div>
+            <InteractionPanel
+                onFeed={feedTamagotchi}
+                onPlay={playWithTamagotchi}
+                onSleep={putTamagotchiToSleep}
+            />
         </div>
     );
 };
