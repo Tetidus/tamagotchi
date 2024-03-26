@@ -7,7 +7,7 @@ import InteractionPanel from '../InteractionPanel/InteractionPanel';
 const Tamagotchi = () => {
     const [position, setPosition] = useState(0);
     const [poops, setPoops] = useState([]);
-    const [happiness, setHappiness] = useState(100);
+    const [happiness, setHappiness] = useState(30);
     const [hunger, setHunger] = useState(0);
     const [energy, setEnergy] = useState(50);
 
@@ -32,7 +32,7 @@ const Tamagotchi = () => {
                 }
                 return prevPoops;
             });
-        }, 5000);
+        }, 100000);
 
         const hungerInterval = setInterval(() => {
             setHunger(prevHunger => {
@@ -64,8 +64,10 @@ const Tamagotchi = () => {
     };
 
     const playWithTamagotchi = () => {
-        setHappiness(prevHappiness => Math.min(prevHappiness + 10, 100));
-        setEnergy(prevEnergy => Math.max(prevEnergy - 10, 0));
+        if (energy >= 10 && happiness != 100) {
+            setHappiness(prevHappiness => Math.min(prevHappiness + 10, 100));
+            setEnergy(prevEnergy => Math.max(prevEnergy - 10, 0));
+        }
     };
 
     const putTamagotchiToSleep = () => {
