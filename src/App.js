@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Tamagotchi from './components/Tamagotchi/Tamagotchi';
-import { auth } from './firebase';
+import Home from './pages/Home'
+
+
 
 const App = () => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = async () => {
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      // Login riuscito
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-
   return (
-    <div className="container">
-      <Tamagotchi />
-      <SignUp />
-      <form>
-        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button type="button" onClick={handleLogin}>Login</button>
-      </form>
-    </div>
+    <>
+      <div className="container">
+        {/* <Tamagotchi />
+        <SignUp />
+        <hr />
+        <Login /> */}
+
+        <BrowserRouter>
+          <Routes>
+          <Route
+        path="/*"
+>
+              <Route index element={<Home />} />
+              <Route path="home" element={<Home />} />
+              <Route path="tamagotchi" element={<Tamagotchi />} />
+              <Route path="signUp" element={<SignUp />} />
+              <Route path="login" element={<Login />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </>
   );
 };
 

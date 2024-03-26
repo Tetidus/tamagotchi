@@ -3,6 +3,7 @@ import './Tamagotchi.css';
 import hero_idle from '../../assets/hero_idle.gif';
 import poopImg from '../../assets/poop.png'; // Assicurati di avere questo file in assets
 import InteractionPanel from '../InteractionPanel/InteractionPanel';
+import { Link } from 'react-router-dom';
 
 const Tamagotchi = () => {
     const [position, setPosition] = useState(0);
