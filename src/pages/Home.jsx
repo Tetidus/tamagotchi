@@ -4,21 +4,22 @@ import { useAuth } from '../authContext';
 import { doSignOut } from '../auth';
 
 const Home = () => {
-//   const navigate = useNavigate();
-//   const { userLoggedIn, currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { userLoggedIn, currentUser } = useAuth();
 
   return (
     <>
-      {/* {userLoggedIn ? (
+      {userLoggedIn ? (
         <>
-          Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}
+          Hello {currentUser.displayName ? currentUser.displayName : currentUser.email} <br />
+          <Link to={'/tamagotchi'}>Inizia</Link>
         </>
-      ) : ( */}
+      ) : (
         <>
           <Link to={'/login'}>Login</Link>
           <Link to={'/signup'}>Sign Up</Link>
         </>
-      {/* )} */}
+      )}
 
       {/* <h1>ciao</h1> */}
     </>

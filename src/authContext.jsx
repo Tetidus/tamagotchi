@@ -41,3 +41,5 @@ export function AuthProvider({ children }) {
         </AuthContext.Provider>
     )
 }
+
+export default AuthContext; // Assicurati di esportare anche il componente AuthContext
