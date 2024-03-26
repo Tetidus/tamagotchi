@@ -4,27 +4,27 @@ import { useAuth } from '../authContext';
 import { doSignOut } from '../auth';
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { userLoggedIn, currentUser } = useAuth();
+    const navigate = useNavigate();
+    const { userLoggedIn, currentUser } = useAuth();
 
-  return (
-    <>
-      {userLoggedIn ? (
+    return (
         <>
-          Hello {currentUser.displayName ? currentUser.displayName : currentUser.email} <br />
-          <Link to={'/tamagotchi'}>Inizia</Link>
-        </>
-      ) : (
-        <>
-          <Link to={'/login'}>Login</Link>
-          <Link to={'/signup'}>Sign Up</Link>
-        </>
-      )}
+            {userLoggedIn ? (
+                <>
+                    Hello {currentUser.displayName ? currentUser.displayName : currentUser.email} <br />
+                    <Link to={'/tamagotchi'}>Inizia</Link>
+                    {/* <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button> */}
+                </>
+            ) : (
+                <>
+                    <Link to={'/login'}>Login</Link>
+                    <Link to={'/signup'}>Sign Up</Link>
+                </>
+            )}
 
-      {/* <h1>ciao</h1> */}
-    </>
-  );
+            {/* <h1>ciao</h1> */}
+        </>
+    );
 };
 
 export default Home;
-          {/* <button onClick={() => { doSignOut().then(() => { navigate('./login') }) }}>Sign Out</button> */}

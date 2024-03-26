@@ -6,7 +6,7 @@ import { doCreateUserWithEmailAndPassword } from '../auth';
 import { Navigate } from 'react-router-dom';
 import { getDatabase, ref, set } from "firebase/database";
 import AuthContext from '../authContext'; // Assicurati che il contesto di autenticazione sia esportato correttamente
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 
@@ -50,6 +50,31 @@ const SignUp = () => {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+      
+      // Autenticazione con Google
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+  
+      // Ottieni un riferimento al database in tempo reale di Firebase
+      const db = getDatabase();
+  
+      // Salva le informazioni dell'utente nel Realtime Database
+      await set(ref(db, 'users/' + user.uid), {
+        email: user.email,
+        // Altre informazioni sull'utente che desideri salvare
+      });
+  
+      // Se tutto è andato a buon fine, puoi procedere con la navigazione o altre azioni necessarie
+      // history.push('/tamagotchi');
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <>
     {userLoggedIn && (<Navigate to={'/tamagotchi'} replace={true} />)}
@@ -58,6 +83,7 @@ const SignUp = () => {
       <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
       <button onClick={handleSignUp}>Registrati</button>
+      <button onClick={handleGoogleSignUp}>Registrati con Google</button>
     </>
   );
 };
