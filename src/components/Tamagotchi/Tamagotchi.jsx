@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Tamagotchi.css';
 import hero_idle from '../../assets/hero_idle.gif';
-import poopImg from '../../assets/poop.png'; // Assicurati di avere questo file in assets
+import poopImg from '../../assets/poop.png';
 import InteractionPanel from '../InteractionPanel/InteractionPanel';
 import { getDatabase, ref, set, onValue } from 'firebase/database';
-import AuthContext from '../../authContext'; // Assicurati che il percorso sia corretto
+import AuthContext from '../../authContext';
 import { doSignOut } from '../../auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,22 +14,23 @@ const Tamagotchi = () => {
     const [happiness, setHappiness] = useState(30);
     const [hunger, setHunger] = useState(0);
     const [energy, setEnergy] = useState(50);
-    const { currentUser } = useContext(AuthContext); // Usa l'AuthContext per ottenere l'utente attuale
-    const [isDataLoaded, setIsDataLoaded] = useState(false); // Sposta questa riga qui
-    const navigate = useNavigate()
+    const { currentUser } = useContext(AuthContext);
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    // const navigate = useNavigate();
 
     useEffect(() => {
         const db = getDatabase();
         const statusRef = ref(db, 'users/' + currentUser.uid + '/status');
 
-        // Restituisce una funzione che può essere usata per rimuovere il listener.
         const unsubscribe = onValue(statusRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                setHappiness(data.happiness || 30); // Usa un valore di default se non definito
+                setHappiness(data.happiness || 30);
                 setHunger(data.hunger || 0);
                 setEnergy(data.energy || 50);
-                setIsDataLoaded(true); // Aggiungi questa riga
+                setIsDataLoaded(true);
+                // Aggiorna il timestamp nel local storage
+                localStorage.setItem('lastUpdateTimestamp', Date.now());
             }
         });
 
@@ -53,20 +54,20 @@ const Tamagotchi = () => {
                 }
                 return prevPoops;
             });
-        }, 100000);
+        }, 100);
 
         const hungerInterval = setInterval(() => {
             setHunger(prevHunger => {
                 const newHunger = prevHunger + 10;
-                return newHunger <= 100 ? newHunger : 100; // Limita il valore massimo a 100
+                return newHunger <= 100 ? newHunger : 100;
             });
-        }, 5000); // Ogni 5 secondi
+        }, 5000);
 
         const happinessInterval = setInterval(() => {
             if (hunger === 100 && happiness > 0) {
-                setHappiness(prevHappiness => Math.max(prevHappiness - 10, 0)); // Imposta happiness a 0 se il nuovo valore è inferiore a 0
+                setHappiness(prevHappiness => Math.max(prevHappiness - 10, 0));
             }
-        }, 5000); // Ogni 5 secondi
+        }, 5000);
 
         return () => {
             clearInterval(moveInterval);
@@ -78,11 +79,9 @@ const Tamagotchi = () => {
     }, [currentUser.uid]);
 
     useEffect(() => {
-        if (!isDataLoaded || !currentUser || !currentUser.uid) return; // Assicurati che l'uid dell'utente esista
+        if (!isDataLoaded || !currentUser || !currentUser.uid) return;
 
         const db = getDatabase();
-        // Qui, costruisci il percorso dove vuoi salvare i dati dentro il tuo database Firebase
-        // Nota: si suppone che `currentUser` sia già definito; altrimenti, gestisci questo caso.
         set(ref(db, 'users/' + currentUser.uid + '/status'), {
             happiness,
             hunger,
@@ -90,7 +89,20 @@ const Tamagotchi = () => {
         }).catch(error => {
             console.error("Firebase set error:", error);
         });
-    }, [happiness, hunger, energy, currentUser, isDataLoaded]); // Dipendenze useEffect
+
+        // Controlla se è trascorso un certo intervallo di tempo dall'ultimo aggiornamento
+        const lastUpdateTimestamp = localStorage.getItem('lastUpdateTimestamp');
+        if (lastUpdateTimestamp) {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - parseInt(lastUpdateTimestamp, 10);
+            const updateInterval = 2 * 60 * 60 * 1000; // 2 ore
+            if (elapsedTime >= updateInterval) {
+                // Esegui la logica per aggiornare i valori
+                // Aggiorna il timestamp nel local storage
+                localStorage.setItem('lastUpdateTimestamp', Date.now());
+            }
+        }
+    }, [happiness, hunger, energy, currentUser, isDataLoaded]);
 
     const removePoop = id => {
         setPoops(prevPoops => prevPoops.filter(poop => poop.id !== id));
@@ -111,9 +123,9 @@ const Tamagotchi = () => {
         setEnergy(prevEnergy => Math.min(prevEnergy + 20, 100));
     };
 
-    if (!isDataLoaded) {
-        return <div>Caricamento...</div>; // Oppure qualsiasi altro markup/componente per il caricamento
-    }
+    // if (!isDataLoaded) {
+    //     return <div>Caricamento...</div>; // Oppure qualsiasi altro markup/componente per il caricamento
+    // }
 
     return (
         <div>
@@ -137,7 +149,7 @@ const Tamagotchi = () => {
             />
 
             <br /><br />
-            <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button>
+            {/* <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button> */}
 
         </div>
     );
