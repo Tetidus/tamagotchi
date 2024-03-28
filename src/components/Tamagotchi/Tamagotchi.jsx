@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Tamagotchi.css';
 import hero_idle from '../../assets/hero_idle.gif';
-import poopImg from '../../assets/poop.png'; 
+import sushi from '../../assets/sushi_tama.png';
+import poopImg from '../../assets/poop.png';
 import InteractionPanel from '../InteractionPanel/InteractionPanel';
-import { getDatabase, ref, set, onValue } from 'firebase/database';
-import AuthContext from '../../authContext'; 
+import { getDatabase, ref, set, onValue, push, remove } from 'firebase/database';
+import AuthContext from '../../authContext';
 import { doSignOut } from '../../auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,64 +15,52 @@ const Tamagotchi = () => {
     const [happiness, setHappiness] = useState(0);
     const [hunger, setHunger] = useState(0);
     const [energy, setEnergy] = useState(50);
-    const { currentUser } = useContext(AuthContext); 
-    const [isDataLoaded, setIsDataLoaded] = useState(false); 
-    const navigate = useNavigate()
+    const { currentUser } = useContext(AuthContext);
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const db = getDatabase();
         const statusRef = ref(db, 'users/' + currentUser.uid + '/status');
+        const poopsRef = ref(db, 'users/' + currentUser.uid + '/poops');
 
-        const unsubscribe = onValue(statusRef, (snapshot) => {
+        const statusUnsubscribe = onValue(statusRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                setHappiness(data.happiness || 0); 
+                setHappiness(data.happiness || 0);
                 setHunger(data.hunger || 0);
                 setEnergy(data.energy || 50);
-                setIsDataLoaded(true); 
+                setIsDataLoaded(true);
+            }
+        });
+
+        const poopsUnsubscribe = onValue(poopsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const poopsArray = Object.entries(data).map(([key, value]) => ({
+                    id: key,
+                    ...value
+                }));
+                setPoops(poopsArray);
             }
         });
 
         const moveInterval = setInterval(() => {
             setPosition(prevPosition => {
                 const nextPosition = prevPosition + (Math.random() < 0.5 ? -20 : 20);
-
-                if (nextPosition < -100) {
-                    return -100;
-                } else if (nextPosition > 100) {
-                    return 100;
-                }
-                return nextPosition;
+                return Math.max(Math.min(nextPosition, 100), -100);
             });
         }, 3000);
 
-        const poopInterval = setInterval(() => {
-            setPoops(prevPoops => {
-                if (prevPoops.length < 5) {
-                    return [...prevPoops, { id: prevPoops.length, position: Math.random() * 200 - 200 }];
-                }
-                return prevPoops;
-            });
-        }, 100000);
-
-        const hungerInterval = setInterval(() => {
-            setHunger(prevHunger => {
-                const newHunger = prevHunger + 10;
-                return newHunger <= 100 ? newHunger : 100; 
-            });
-        }, 5000);
-
         return () => {
             clearInterval(moveInterval);
-            clearInterval(poopInterval);
-            clearInterval(hungerInterval);
-            // clearInterval(happinessInterval);
-            unsubscribe();
+            statusUnsubscribe();
+            poopsUnsubscribe();
         };
     }, [currentUser.uid]);
 
     useEffect(() => {
-        if (!isDataLoaded || !currentUser || !currentUser.uid) return; 
+        if (!isDataLoaded || !currentUser || !currentUser.uid) return;
 
         const db = getDatabase();
         set(ref(db, 'users/' + currentUser.uid + '/status'), {
@@ -81,7 +70,7 @@ const Tamagotchi = () => {
         }).catch(error => {
             console.error("Firebase set error:", error);
         });
-    }, [happiness, hunger, energy, currentUser, isDataLoaded]); 
+    }, [happiness, hunger, energy, currentUser, isDataLoaded]);
 
     useEffect(() => {
         const happinessInterval = setInterval(() => {
@@ -95,9 +84,34 @@ const Tamagotchi = () => {
         };
     }, [hunger]);
 
-    const removePoop = id => {
-        setPoops(prevPoops => prevPoops.filter(poop => poop.id !== id));
+    const removePoop = (id) => {
+        const db = getDatabase();
+        const poopRef = ref(db, `users/${currentUser.uid}/poops/${id}`);
+        remove(poopRef)
+            .then(() => {
+                console.log(`Poop ${id} removed successfully.`);
+                setPoops(currentPoops => currentPoops.filter(poop => poop.id !== id));
+            })
+            .catch((error) => console.error("Error removing poop: ", error));
     };
+
+    useEffect(() => {
+        if (poops.length >= 5) return;
+
+        const db = getDatabase();
+        const poopInterval = setInterval(() => {
+            if (poops.length < 5) {
+                const newPoopRef = push(ref(db, `users/${currentUser.uid}/poops`));
+                const newPoop = {
+                    id: newPoopRef.key,
+                    position: Math.random() * 200 - 100
+                };
+                set(newPoopRef, newPoop);
+            }
+        }, 10000);
+
+        return () => clearInterval(poopInterval);
+    }, [poops.length, currentUser.uid]);
 
     const feedTamagotchi = () => {
         setHunger(prevHunger => Math.max(prevHunger - 10, 0));
@@ -115,20 +129,20 @@ const Tamagotchi = () => {
     };
 
     if (!isDataLoaded) {
-        return <div>Caricamento...</div>; 
+        return <div>Caricamento...</div>;
     }
 
     return (
         <div>
-            <h2>Tamagotchi</h2>
-            <img src={hero_idle} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
+            <h1 className="text-2xl mb-10">Tamagotchi</h1>
+            <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
             {poops.map(poop => (
                 <img key={poop.id} src={poopImg} alt="Poop" className="poop"
-                    style={{ position: 'absolute', transform: `translateX(${poop.position}px) translateY(52px)` }}
+                    style={{ position: 'absolute', transform: `translateX(${poop.position}px) translateY(18px)` }}
                     onClick={() => removePoop(poop.id)} />
             ))}
             <hr />
-            <div className="statusBar stats">
+            <div className="statusBar stats my-5">
                 <p>Hunger: {hunger}</p>
                 <p>Happiness: {happiness}</p>
                 <p>Energy: {energy}</p>
