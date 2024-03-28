@@ -34,6 +34,7 @@ body {
   background-color: #212121;
   color: #eee;
   height: 100vh;
+  margin: 0;
 }
 
 .container {
