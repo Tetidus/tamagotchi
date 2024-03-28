@@ -52,6 +52,17 @@ body {
   width: 64px;
 }
 
+.room {
+  position: absolute;
+  z-index: 0;
+  width: 350px;
+  transform: translate(-143px, -70px);
+}
+
+.title {
+  margin-bottom: 100px;
+}
+
 
 .eightbit-btn {
   background: #92CD41;

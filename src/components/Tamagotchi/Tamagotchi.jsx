@@ -3,6 +3,7 @@ import './Tamagotchi.css';
 import hero_idle from '../../assets/hero_idle.gif';
 import sushi from '../../assets/sushi_tama.png';
 import poopImg from '../../assets/poop.png';
+import room from '../../assets/room.gif'
 import InteractionPanel from '../InteractionPanel/InteractionPanel';
 import { getDatabase, ref, set, onValue, push, remove } from 'firebase/database';
 import AuthContext from '../../authContext';
@@ -134,7 +135,8 @@ const Tamagotchi = () => {
 
     return (
         <div>
-            <h1 className="text-2xl mb-10">Tamagotchi</h1>
+            <h1 className="text-2xl title">Tamagotchi</h1>
+            <img src={room} className="room" />
             <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
             {poops.map(poop => (
                 <img key={poop.id} src={poopImg} alt="Poop" className="poop"
