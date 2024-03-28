@@ -132,6 +132,13 @@ const Tamagotchi = () => {
     // if (!isDataLoaded) {
     //     return <div>Caricamento...</div>;
     // }
+    function isSafari() {
+        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    }
+
+    if (isSafari()) {
+        document.querySelector('.room').classList.add('safari');
+    }
 
     return (
         <div>

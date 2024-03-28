@@ -60,6 +60,10 @@ body {
   transform: translate(-143px, -70px);
 }
 
+.room.safari {
+  transform: translate(-175px, -70px);
+}
+
 .title {
   margin-bottom: 100px;
 }
