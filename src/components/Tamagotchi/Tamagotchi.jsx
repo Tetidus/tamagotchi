@@ -129,9 +129,9 @@ const Tamagotchi = () => {
         setEnergy(prevEnergy => Math.min(prevEnergy + 20, 100));
     };
 
-    if (!isDataLoaded) {
-        return <div>Caricamento...</div>;
-    }
+    // if (!isDataLoaded) {
+    //     return <div>Caricamento...</div>;
+    // }
 
     return (
         <div>
