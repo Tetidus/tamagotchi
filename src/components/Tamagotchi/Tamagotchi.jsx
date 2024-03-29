@@ -18,7 +18,6 @@ const Tamagotchi = () => {
     const [hunger, setHunger] = useState(0);
     const [energy, setEnergy] = useState(50);
     const [coin, setCoin] = useState(50)
-    const [isSafari, setIsSafari] = useState(false);
     const { currentUser } = useContext(AuthContext);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const navigate = useNavigate();
@@ -150,13 +149,6 @@ const Tamagotchi = () => {
     //     return <div>Caricamento...</div>;
     // }
 
-    useEffect(() => {
-        // Rilevamento di Safari. Nota: questo metodo può non essere affidabile per tutti i casi d'uso
-        const userAgent = window.navigator.userAgent;
-        const safari = /^((?!chrome|android).)*safari/i.test(userAgent);
-        setIsSafari(safari);
-    }, []);
-
     return (
         <div className="bodyFlex">
             <div className="container">
@@ -170,9 +162,8 @@ const Tamagotchi = () => {
                         <img src={coins} alt="coin" className="coin" />
                     </div>
                 </div>
-                <img src={room} className="room" style={{
-                    transform: isSafari ? 'translate(-175px,-70px)' : 'translate(-143px,-70px)'
-                }} />            <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
+                <img src={room} className="room" />            
+                <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
                 {poops.map(poop => (
                     <img key={poop.id} src={poopImg} alt="Poop" className="poop"
                         style={{ position: 'absolute', transform: `translateX(${poop.position}px) translateY(18px)` }}
