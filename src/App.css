@@ -74,7 +74,7 @@ body {
 }
 
 .room.safari {
-  transform: translate(-175px, -70px) !important;
+  /* transform: translate(-175px, -70px) !important; */
 }
 
 .coin {
