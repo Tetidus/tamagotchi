@@ -4,6 +4,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Tamagotchi from './components/Tamagotchi/Tamagotchi';
 import Home from './pages/Home'
+import Shop from './pages/Shop';
 
 
 
@@ -11,26 +12,21 @@ const App = () => {
 
   return (
     <>
-      <div className="container">
-        {/* <Tamagotchi />
-        <SignUp />
-        <hr />
-        <Login /> */}
 
-        <BrowserRouter>
-          <Routes>
+      <BrowserRouter>
+        <Routes>
           <Route
-        path="/*"
->
-              <Route index element={<Home />} />
-              <Route path="home" element={<Home />} />
-              <Route path="tamagotchi" element={<Tamagotchi />} />
-              <Route path="signUp" element={<SignUp />} />
-              <Route path="login" element={<Login />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
+            path="/*"
+          >
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="tamagotchi" element={<Tamagotchi />} />
+            <Route path="signUp" element={<SignUp />} />
+            <Route path="login" element={<Login />} />
+            <Route path="shop" element={<Shop />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 };

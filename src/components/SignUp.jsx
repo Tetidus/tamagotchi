@@ -69,15 +69,19 @@ const SignUp = () => {
 
   return (
     <>
-      {userLoggedIn && (<Navigate to={'/tamagotchi'} replace={true} />)}
-      <h1 className="mb-10 text-2xl">Registrazione</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Visualizza il messaggio di errore */}
-      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" className="my-5 h-100" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button className="eightbit-btn eightbit-btn--black mt-5" onClick={handleSignUp}>Registrati</button>
-      {/* <button onClick={handleGoogleSignUp}>Registrati con Google</button> */}
-      <div className="text-m mt-5">
-        <Link to={'/login'}>Go to Login</Link>
+      <div className="bodyFlex">
+        <div className="container">
+          {userLoggedIn && (<Navigate to={'/tamagotchi'} replace={true} />)}
+          <h1 className="mb-10 text-2xl">Registrazione</h1>
+          {error && <p style={{ color: 'red' }}>{error}</p>} {/* Visualizza il messaggio di errore */}
+          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input type="password" className="my-5 h-100" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <button className="eightbit-btn eightbit-btn--black mt-5" onClick={handleSignUp}>Registrati</button>
+          {/* <button onClick={handleGoogleSignUp}>Registrati con Google</button> */}
+          <div className="text-m mt-5">
+            <Link to={'/login'}>Go to Login</Link>
+          </div>
+        </div>
       </div>
     </>
   );

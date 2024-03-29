@@ -4,11 +4,12 @@ import hero_idle from '../../assets/hero_idle.gif';
 import sushi from '../../assets/sushi_tama.png';
 import poopImg from '../../assets/poop.png';
 import room from '../../assets/room.gif'
+import coins from '../../assets/coin.png'
 import InteractionPanel from '../InteractionPanel/InteractionPanel';
 import { getDatabase, ref, set, onValue, push, remove } from 'firebase/database';
 import AuthContext from '../../authContext';
 import { doSignOut } from '../../auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Tamagotchi = () => {
     const [position, setPosition] = useState(0);
@@ -16,6 +17,7 @@ const Tamagotchi = () => {
     const [happiness, setHappiness] = useState(0);
     const [hunger, setHunger] = useState(0);
     const [energy, setEnergy] = useState(50);
+    const [coin, setCoin] = useState(50)
     const [isSafari, setIsSafari] = useState(false);
     const { currentUser } = useContext(AuthContext);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -32,6 +34,7 @@ const Tamagotchi = () => {
                 setHappiness(data.happiness || 0);
                 setHunger(data.hunger || 0);
                 setEnergy(data.energy || 50);
+                setCoin(data.coin || 0)
                 setIsDataLoaded(true);
             }
         });
@@ -68,11 +71,24 @@ const Tamagotchi = () => {
         set(ref(db, 'users/' + currentUser.uid + '/status'), {
             happiness,
             hunger,
-            energy
+            energy,
+            coin
         }).catch(error => {
             console.error("Firebase set error:", error);
         });
-    }, [happiness, hunger, energy, currentUser, isDataLoaded]);
+    }, [happiness, hunger, energy, coin, currentUser, isDataLoaded]);
+
+    useEffect(() => {
+        // Definisce un intervallo per aumentare la fame (hunger) ogni tot secondi
+        const hungerInterval = setInterval(() => {
+            setHunger(prevHunger => Math.min(prevHunger + 10, 100)); // Aumenta di 10 fino a un massimo di 100
+        }, 1000); // 10000 ms = 10 secondi
+
+        return () => {
+            clearInterval(hungerInterval); // Pulisce l'intervallo quando il componente viene smontato o la dipendenza cambia
+        };
+    }, []); // Dipendenze vuote => l'effetto si esegue solo una volta all'inizio
+
 
     useEffect(() => {
         const happinessInterval = setInterval(() => {
@@ -142,31 +158,42 @@ const Tamagotchi = () => {
     }, []);
 
     return (
-        <div>
-            <h1 className="text-2xl title">Tamagotchi</h1>
-            <img src={room} className="room" style={{
-                transform: isSafari ? 'translate(-175px,-70px)' : 'translate(-143px,-70px)'
-            }} />            <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
-            {poops.map(poop => (
-                <img key={poop.id} src={poopImg} alt="Poop" className="poop"
-                    style={{ position: 'absolute', transform: `translateX(${poop.position}px) translateY(18px)` }}
-                    onClick={() => removePoop(poop.id)} />
-            ))}
-            <hr />
-            <div className="statusBar stats my-5">
-                <p>Hunger: {hunger}</p>
-                <p>Happiness: {happiness}</p>
-                <p>Energy: {energy}</p>
+        <div className="bodyFlex">
+            <div className="container">
+                <h1 className="text-2xl title">Tamagotchi</h1>
+                <div className="coin-container">
+                    <Link to={'/shop'}onClick={() => console.log('click')} className="eightbit-btn eightbit-btn--black">
+                        SHOP
+                    </Link>
+                    <div className="flex flex-row items-center">
+                        <p>{coin}</p>
+                        <img src={coins} alt="coin" className="coin" />
+                    </div>
+                </div>
+                <img src={room} className="room" style={{
+                    transform: isSafari ? 'translate(-175px,-70px)' : 'translate(-143px,-70px)'
+                }} />            <img src={sushi} alt="Tamagotchi character" className="character" style={{ transform: `translateX(${position}px)` }} />
+                {poops.map(poop => (
+                    <img key={poop.id} src={poopImg} alt="Poop" className="poop"
+                        style={{ position: 'absolute', transform: `translateX(${poop.position}px) translateY(18px)` }}
+                        onClick={() => removePoop(poop.id)} />
+                ))}
+                <hr />
+                <div className="statusBar stats my-5">
+                    <p>Hunger: {hunger}</p>
+                    <p>Happiness: {happiness}</p>
+                    <p>Energy: {energy}</p>
+                </div>
+                <InteractionPanel
+                    onFeed={feedTamagotchi}
+                    onPlay={playWithTamagotchi}
+                    onSleep={putTamagotchiToSleep}
+                />
+
+                <br /><br />
+                <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button>
+
             </div>
-            <InteractionPanel
-                onFeed={feedTamagotchi}
-                onPlay={playWithTamagotchi}
-                onSleep={putTamagotchiToSleep}
-            />
-
-            <br /><br />
-            <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button>
-
         </div>
     );
 };

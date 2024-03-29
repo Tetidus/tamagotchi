@@ -9,20 +9,22 @@ const Home = () => {
 
     return (
         <>
-            {userLoggedIn ? (
-                <>
-                    Hello {currentUser.displayName ? currentUser.displayName : currentUser.email} <br />
-                    <Link to={'/tamagotchi'}>Inizia</Link>
-                    {/* <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button> */}
-                </>
-            ) : (
-                <>
-                    <Link to={'/login'}>Login</Link>
-                    <Link to={'/signup'}>Sign Up</Link>
-                </>
-            )}
-
-            {/* <h1>ciao</h1> */}
+            <div className="bodyFlex">
+                <div className="container">
+                    {userLoggedIn ? (
+                        <>
+                            Hello {currentUser.displayName ? currentUser.displayName : currentUser.email} <br />
+                            <Link to={'/tamagotchi'}>Inizia</Link>
+                            {/* <button onClick={() => { doSignOut().then(() => { navigate('/login') }) }}>Sign Out</button> */}
+                        </>
+                    ) : (
+                        <>
+                            <Link to={'/login'}>Login</Link>
+                            <Link to={'/signup'}>Sign Up</Link>
+                        </>
+                    )}
+                </div>
+            </div>
         </>
     );
 };

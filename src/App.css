@@ -30,10 +30,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* justify-content: center; */
+  background-color: #212121;
+  color: #eee;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+}
+
+.bodyFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   background-color: #212121;
   color: #eee;
   height: 100vh;
+  width: 100vw;
   margin: 0;
 }
 
@@ -57,15 +70,28 @@ body {
   position: absolute;
   z-index: 0;
   width: 350px;
-  transform: translate(-143px, -70px);
+  transform: translate(-143px, -70px) !important;
 }
 
 .room.safari {
-  transform: translate(-175px, -70px);
+  transform: translate(-175px, -70px) !important;
+}
+
+.coin {
+  height: 28px;
+  width: 28px;
+  margin-left: 5px;
+}
+
+.coin-container {
+  transform: translate(0px, -90px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .title {
-  margin-bottom: 100px;
+  margin-bottom: 110px;
 }
 
 
@@ -106,26 +132,26 @@ body {
   border-left: 6px black solid;
   border-right: 6px black solid;
 }
-.eightbit-btn--reset {
+.eightbit-btn--red {
   background: #E76E55;
   box-shadow: inset -4px -4px 0px 0px #8C2022;
 }
-.eightbit-btn--reset:hover, .eightbit-btn--reset:focus {
+.eightbit-btn--red:hover, .eightbit-btn--red:focus {
   background: #CE372B;
   box-shadow: inset -6px -6px 0px 0px #8C2022;
 }
-.eightbit-btn--reset:active {
+.eightbit-btn--red:active {
   box-shadow: inset 4px 4px 0px 0px #8C2022;
 }
-.eightbit-btn--proceed {
+.eightbit-btn--yellow {
   background: #F7D51D;
   box-shadow: inset -4px -4px 0px 0px #E59400;
 }
-.eightbit-btn--proceed:hover, .eightbit-btn--proceed:focus {
+.eightbit-btn--yellow:hover, .eightbit-btn--yellow:focus {
   background: #F2C409;
   box-shadow: inset -6px -6px 0px 0px #E59400;
 }
-.eightbit-btn--proceed:active {
+.eightbit-btn--yellow:active {
   box-shadow: inset 4px 4px 0px 0px #E59400;
 }
 
@@ -141,3 +167,25 @@ body {
 .eightbit-btn--black:active {
   box-shadow: inset 4px 4px 0px 0px #010101;
 }
+
+
+/* ____________ SHOP ______________ */
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; 
+  justify-content: center; 
+}
+
+.product-card {
+  flex: 0 1 calc(50% - 10px); 
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product-image {
+  max-width: 100%;
+  height: auto;
+}
+
