@@ -1,7 +1,6 @@
-// firebase.js
-import firebase from 'firebase/compat/app'; // Modifica questa riga
-import 'firebase/compat/auth'; // Modifica questa riga
-import 'firebase/compat/database'; // Modifica questa riga
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCe07spHk5UaHYo6z7acuTBDqb3jU1980E",
@@ -12,11 +11,8 @@ const firebaseConfig = {
     messagingSenderId: "159549543998",
     appId: "1:159549543998:web:551b37df0271111c50636f",
     measurementId: "G-Z2T0JRTFH7"
-  };
-  
+};
 
-// Inizializza Firebase con la configurazione
-firebase.initializeApp(firebaseConfig);
-
-export const auth = firebase.auth();
-export const database = firebase.database();
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const database = getDatabase(app);

@@ -42,12 +42,15 @@ const Login = () => {
     }
 
     const handleLogin = async () => {
+        if (isSigningIn) return;
+        setIsSigningIn(true);
         try {
-            await auth.signInWithEmailAndPassword(email, password);
-            // Login riuscito
+            await doSignInWithEmailAndPassword(email, password);
         } catch (error) {
             console.error(error.message);
-            setErrorMessage(error.message); // Imposta il messaggio di errore
+            setErrorMessage(error.message);
+        } finally {
+            setIsSigningIn(false);
         }
     };
 

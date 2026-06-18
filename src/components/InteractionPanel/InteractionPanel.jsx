@@ -3,12 +3,12 @@ import React from 'react';
 import "../../App.css"
 import "./InteractionPanel.css"
 
-const InteractionPanel = ({ onFeed, onPlay, onSleep }) => {
+const InteractionPanel = ({ onFeed, onPlay, isSleeping = false }) => {
+  const dim = { opacity: isSleeping ? 0.35 : 1, pointerEvents: isSleeping ? 'none' : 'auto' };
   return (
     <div className="statusBar">
-      <button className="eightbit-btn eightbit-btn--yellow" onClick={onFeed}>Feed</button>
-      <button className="eightbit-btn" onClick={onPlay}>Play</button>
-      <button className="eightbit-btn eightbit-btn--red" onClick={onSleep}>Sleep</button>
+      <button className="eightbit-btn eightbit-btn--yellow" onClick={onFeed} style={dim}>Feed</button>
+      <button className="eightbit-btn" onClick={onPlay} style={dim}>Play</button>
     </div>
   );
 };

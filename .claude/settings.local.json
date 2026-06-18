@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx react-scripts *)",
+      "Bash(npm run *)",
+      "Bash(identify /Users/teti/Desktop/tamagotchigame/src/assets/characters/character0.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/teti/Desktop/tamagotchigame/src/assets/characters/character0.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/teti/Desktop/tamagotchigame/src/assets/room.gif)"
+    ]
+  }
+}

@@ -1,5 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, updatePassword, sendEmailVerification } from "firebase/auth";
-import { async } from "rxjs";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 
 
@@ -19,7 +18,7 @@ export const doSignInWithGoogle = async() => {
 }
 
 export const doSignOut = () => {
-    return auth.signOut();
+    return signOut(auth);
 }
 
 export const doPasswordReset = (email) => {

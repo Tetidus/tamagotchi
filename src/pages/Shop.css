@@ -1,0 +1,28 @@
+.shop-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.shop-coin-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.medicine-badge {
+  font-size: 9px;
+  color: #aaa;
+}
+
+.shop-feedback {
+  font-size: 8px;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  padding: 6px 12px;
+  margin: 8px auto;
+  max-width: 300px;
+}

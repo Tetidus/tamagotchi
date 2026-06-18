@@ -5,6 +5,7 @@ import SignUp from './components/SignUp';
 import Tamagotchi from './components/Tamagotchi/Tamagotchi';
 import Home from './pages/Home'
 import Shop from './pages/Shop';
+import Games from './pages/Games';
 
 
 
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="signUp" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="shop" element={<Shop />} />
+            <Route path="games" element={<Games />} />
           </Route>
         </Routes>
       </BrowserRouter>

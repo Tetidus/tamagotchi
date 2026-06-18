@@ -1,14 +1,263 @@
-.stats {
-    font-size: 12px;
+.character {
+  transition: transform 0.5s ease-in-out;
+  position: relative;
+  z-index: 1;
 }
 
-.character {
-    transition: transform 0.5s ease-in-out;
-    position: relative;
-    z-index: 1;
-  }
+.poop {
+  width: 40px;
+  z-index: 2;
+  bottom: 4px;
+}
 
-  .poop {
-    width: 48px;
-    z-index: 2;
-  }
+/* ── Animazione mangiare ── */
+@keyframes eatBounce {
+  0%,  100% { transform: translateY(0);    }
+  25%        { transform: translateY(-14px); }
+  50%        { transform: translateY(0);    }
+  75%        { transform: translateY(-8px); }
+}
+
+.eating {
+  animation: eatBounce 0.65s ease;
+}
+
+/* ── Uovo ── */
+.egg-display {
+  font-size: 3rem;
+  line-height: 1;
+  display: block;
+  padding-bottom: 4px;
+}
+
+/* ── Cuoricini ── */
+.character-wrapper {
+  cursor: pointer;
+}
+
+.hearts-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.heart {
+  position: absolute;
+  bottom: 60%;
+  font-size: 0.85rem;
+  animation: heartFloat 1.4s ease-out forwards;
+}
+
+@keyframes heartFloat {
+  0%   { transform: translateY(0)     scale(0.6); opacity: 1; }
+  100% { transform: translateY(-45px) scale(1.1); opacity: 0; }
+}
+
+/* ── Area pet ── */
+.pet-area {
+  position: relative;
+  height: 155px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* ── Badge evoluzione (angolo) ── */
+.evo-corner-badge {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  font-size: 1rem;
+  line-height: 1;
+  z-index: 3;
+  opacity: 0.85;
+}
+
+/* ── Overlay sonno ── */
+.sleep-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 15, 0.88);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sleep-z {
+  font-size: 1.5rem;
+  color: #aaaaff;
+  animation: sleepFloat 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes sleepFloat {
+  0%   { transform: translateY(0px) scale(0.7); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(-22px) scale(1.1); opacity: 0; }
+}
+
+/* ── Teschi malattia ── */
+.sick-skull {
+  position: absolute;
+  bottom: 8px;
+  font-size: 1rem;
+  z-index: 3;
+  pointer-events: none;
+  animation: skullFloat 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes skullFloat {
+  from { transform: translateY(0px);   opacity: 0.5; }
+  to   { transform: translateY(-14px); opacity: 1;   }
+}
+
+/* ── Stat dots ── */
+.stats-dots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin: 10px 0 6px;
+  padding: 0 4px;
+}
+
+.stat-dot-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-dot-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  width: 18px;
+  text-align: center;
+}
+
+.stat-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.stat-dot {
+  font-size: 0.5rem;
+  line-height: 1;
+  color: #eee;
+}
+
+.stat-dot.empty {
+  color: #444;
+}
+
+/* ── Età / cura ── */
+.pet-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 7px;
+  color: #777;
+  margin: 4px 0 10px;
+}
+
+/* ── Character wrapper (per accessori) ── */
+.character-wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  transition: transform 0.5s ease-in-out;
+}
+
+.accessory-emoji {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* ── Bottone medicina ── */
+.medicine-use-btn {
+  font-size: 8px !important;
+  margin-top: 10px;
+}
+
+/* ── Bottone luce ── */
+.light-btn {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  z-index: 11;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.light-btn:hover { opacity: 1; }
+
+/* ── Schermata morte ── */
+.death-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 10px;
+  gap: 12px;
+}
+
+.death-ghost {
+  font-size: 3.5rem;
+  animation: ghostFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes ghostFloat {
+  from { transform: translateY(0);    opacity: 0.7; }
+  to   { transform: translateY(-12px); opacity: 1;  }
+}
+
+.death-msg {
+  font-size: 8px;
+  color: #aaa;
+  line-height: 20px;
+}
+
+/* ── DEV panel ── */
+.dev-panel {
+  margin-top: 20px;
+  border: 2px dashed #555;
+  padding: 10px;
+}
+
+.dev-title {
+  font-size: 7px;
+  color: #f44336;
+  margin-bottom: 8px;
+}
+
+.dev-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.dev-grid button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 6px;
+  padding: 6px 4px;
+  background: #333;
+  color: #eee;
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+.dev-grid button:hover {
+  background: #444;
+}

@@ -1,0 +1,42 @@
+.product-card {
+  padding: 12px 8px;
+  margin-bottom: 10px;
+  border: 2px solid #333;
+}
+
+.card-equipped {
+  border-color: #ffd700 !important;
+}
+
+.product-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.product-name {
+  font-size: 8px;
+  margin: 0 0 4px;
+}
+
+.product-effects {
+  font-size: 6px;
+  color: #999;
+  margin: 0 0 6px;
+  line-height: 14px;
+}
+
+.product-cost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 9px;
+  margin-bottom: 8px;
+  min-height: 20px;
+}
+
+.product-card .eightbit-btn {
+  font-size: 7px;
+  padding: 6px 10px;
+}
